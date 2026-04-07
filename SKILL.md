@@ -8,12 +8,25 @@ author: zhangpelf
 repository: https://github.com/zhangpelf/wiki-compiler
 ---
 
-# Wiki Compiler (知识库自动编译器)
+# Wiki Compiler (VK) 🧠: 复刻卡帕西的“第二大脑”
 
-该技能提供一套由 AI 全权维护的个人知识库自动化流程。它旨在将大量松散的未加工资料（`raw/` 目录）“编译”并“映射”到格式良好、紧密双链的 Obsidian 知识长青库（`wiki/` 目录）中，并附带用于建立发散性连接的“做梦(Dreaming)”机制。
+> "笔记，本来就应该是大语言模型（LLM）的领地。" —— Andrej Karpathy
 
-## 适用场景 (When to use)
-当你收到指令 `/wiki-compiler`、或用户要求“将新资料存放到知识库”，以及要求触发 `/wiki-dream` 时，启动此流程。
+Wiki Compiler 不仅仅是一个 Obsidian 插件或脚本，它是为您量身定制的**全自动知识生命体**。它旨在终结“只记不读”的数字化囤积症，将您散乱的原始素材（`raw/`）自动化、增量化地编译成具备**句级溯源 (LSC)**、**高度互联**的学术级长青库（`wiki/`）。
+
+---
+
+## 🌟 为什么它与众不同？ (The Gimmicks)
+
+1. **增量编译 (Incremental Compiler)**：扔进一篇论文或长文，模型自动分区、打标、关联。绝不制造冗余，只做增量。
+2. **深夜“做梦”机制 (Nightly Dreaming)**：当您休息时，Agent 在巡逻。它会在看似不相关的知识点（Node）之间进行“潜意识漫游”，捕捉跨界灵感并自动生成 `Insight` 启发卡片。
+3. **Map-Reduce 学术综述**：百篇文献一键并行处理。每一句陈述都必须带上 `[[原始文献]]` 引用。杜绝幻觉，严谨到变态。
+4. **防幻觉裁判 (Hallucination Referee)**：遇到知识盲区自动生成 `⚠️ Definition_Needed` 标记，强制进行二元判别。
+
+---
+
+## 🛠️ 适用场景 (When to use)
+当您发出 `/wiki-compiler`、或用户要求“将新资料存放到知识库”，以及要求触发 `/wiki-dream` 时，启动此流程。
 
 ## 关键流程约定
 
