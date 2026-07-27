@@ -1,27 +1,46 @@
 ---
 name: wiki-compiler
-description: 个人知识库全自动编译器 (Andrej Karpathy 风格)。支持 /wiki-compiler (增量编译), /wiki-dream (沉思/做梦), /wiki-weaver (Map-Reduce 综述)。利用幂等引擎防止冗余，内置“句级溯源”严谨性检查。
-version: 2.1.0
+description: 个人知识库全自动编译器 (三层卷积架构)。支持 /wiki-compiler (增量编译), /wiki-dream (沉思/做梦), /wiki-weaver (Map-Reduce 综述)。借鉴 CNN 卷积层思想：Raw → Refined → Summary，逐层压缩，按需下钻。
+version: 3.0.0
 emoji: 🧠
-os: ["macos", "linux", "windows"]
+os: [“macos”, “linux”, “windows”]
 author: zhangpelf
 repository: https://github.com/zhangpelf/wiki-compiler
 ---
 
-# Wiki Compiler (VK) 🧠: 复刻卡帕西的“第二大脑”
+# Wiki Compiler (VK) 🧠 V3: 三层卷积知识架构
 
-> "笔记，本来就应该是大语言模型（LLM）的领地。" —— Andrej Karpathy
+> “笔记，本来就应该是大语言模型（LLM）的领地。” —— Andrej Karpathy
 
-Wiki Compiler 不仅仅是一个 Obsidian 插件或脚本，它是为您量身定制的**全自动知识生命体**。它旨在终结“只记不读”的数字化囤积症，将您散乱的原始素材（`raw/`）自动化、增量化地编译成具备**句级溯源 (LSC)**、**高度互联**的学术级长青库（`wiki/`）。
+Wiki Compiler 是为您量身定制的**全自动知识生命体**。V3 核心设计借鉴 **CNN 卷积层** 思想，实现三层渐进式知识架构：
+
+```
+Layer 1 (Raw)      全量原始资料        感受野最大，信息最全
+Layer 2 (Refined)  精炼 Markdown       结构化 + 双链，信息压缩
+Layer 3 (Summary)  总结 + 标签索引      最小粒度，快速定位
+```
+
+**访问路径（逐层下钻，像 CNN 感受野缩小）**：
+```
+Layer 3 (扫描标签/总结) → Layer 2 (精炼版) → Layer 1 (全文)
+```
+
+核心能力：
+1. **增量编译**：扔进一篇论文，自动分区、打标、关联，绝不制造冗余
+2. **三层索引**：每个知识点有 Summary → Refined → Raw 三层表示
+3. **深夜”做梦”**：在看似不相关的知识点之间进行”潜意识漫游”，捕捉跨界灵感
+4. **Map-Reduce 学术综述**：百篇文献一键并行处理，句级溯源
+5. **防幻觉裁判**：遇到知识盲区自动生成 `⚠️ Definition_Needed` 标记
 
 ---
 
 ## 🌟 为什么它与众不同？ (The Gimmicks)
 
-1. **增量编译 (Incremental Compiler)**：扔进一篇论文或长文，模型自动分区、打标、关联。绝不制造冗余，只做增量。
-2. **深夜“做梦”机制 (Nightly Dreaming)**：当您休息时，Agent 在巡逻。它会在看似不相关的知识点（Node）之间进行“潜意识漫游”，捕捉跨界灵感并自动生成 `Insight` 启发卡片。
-3. **Map-Reduce 学术综述**：百篇文献一键并行处理。每一句陈述都必须带上 `[[原始文献]]` 引用。杜绝幻觉，严谨到变态。
-4. **防幻觉裁判 (Hallucination Referee)**：遇到知识盲区自动生成 `⚠️ Definition_Needed` 标记，强制进行二元判别。
+1. **三层卷积架构 (CNN-style)**：每个知识点有 Summary → Refined → Raw 三层表示。先扫标签快速定位，再按需下钻，避免信息过载。
+2. **增量编译 (Incremental Compiler)**：扔进一篇论文或长文，模型自动分区、打标、关联。绝不制造冗余，只做增量。
+3. **深夜”做梦”机制 (Nightly Dreaming)**：当您休息时，Agent 在巡逻。它会在看似不相关的知识点之间进行”潜意识漫游”，捕捉跨界灵感并自动生成 `Insight` 启发卡片。
+4. **Map-Reduce 学术综述**：百篇文献一键并行处理。每一句陈述都必须带上 `[[原始文献]]` 引用。杜绝幻觉，严谨到变态。
+5. **防幻觉裁判 (Hallucination Referee)**：遇到知识盲区自动生成 `⚠️ Definition_Needed` 标记，强制进行二元判别。
 
 ---
 
@@ -33,13 +52,40 @@ Wiki Compiler 不仅仅是一个 Obsidian 插件或脚本，它是为您量身�
 无论哪种模式，始终要求确定前置变量：
 **`RAW_DIR`** 和 **`WIKI_DIR`**。如果用户在触发时没有提供对应参数，或上下文环境中未获取到，请询问这俩目录的**绝对路径**。对于 `/wiki-dream` 仅需 `WIKI_DIR`。
 
+## 三层目录结构
+
+```
+WIKI_DIR/
+├── concepts/          ← Layer 2: 精炼概念文章
+├── projects/          ← Layer 2: 精炼项目文章
+├── .index/            ← Layer 3: 总结 + 标签索引
+│   ├── xxx.summary.md
+│   └── compiled_ledger.json
+└── ...
+```
+
+### Layer 3 文件格式 (`.index/xxx.summary.md`)
+
+```yaml
+---
+tags: [土地利用, 景观格局, 空间分析]
+summary: "一句话核心结论"
+source: "[[某篇Layer2文件]]"
+source_raw: "raw/原始文件名.pdf"
+created: 2026-07-27
+maturity: reviewed
+---
+
+一句话核心结论（2-3 句扩展说明）
+```
+
 ### 工作流 A：增量编译 (Trigger: `/wiki-compiler`)
 
 核心原则：**严禁制造冗余，增量永远大于全量**。
 1. **同步对比**：
    运行环境钩子脚本 `python3 <INSTALL_DIR>/wiki-compiler/scripts/sync_manifest.py --raw "$RAW_DIR" --wiki "$WIKI_DIR"`。
-   该脚本会比对 `RAW_DIR` 内文件的修改时间哈希与 `WIKI_DIR/.meta/compiled_ledger.json`，在终端输出【待处理的新增/更改文件列表】。
-2. **提取与编译**：
+   该脚本会比对 `RAW_DIR` 内文件的修改时间哈希与 `WIKI_DIR/.index/compiled_ledger.json`，在终端输出【待处理的新增/更改文件列表】以及【缺失 Layer 3 的文件列表】。
+2. **提取与编译 (Layer 1 → Layer 2)**：
    根据上述脚本输出的文件：
    - 充分通读目标源文件（如果是文本、代码或小网页内容）。
    - 将其提炼成干净、学术的汇编文章。存入 `WIKI_DIR/projects/` 或 `WIKI_DIR/concepts/` 中。若无合适类目，可根据概念自建新文件。
@@ -56,7 +102,13 @@ Wiki Compiler 不仅仅是一个 Obsidian 插件或脚本，它是为您量身�
      ---
      ```
      并且在正文中间隔性地用 `---` 划开页面，以方便用户一键预览演讲幻灯片形式。
-4. **收尾 (更新账本)**：
+4. **生成 Layer 3 索引（自动）**：
+   **每个 Layer 2 文件编译完成后，自动生成对应的 Layer 3 summary 文件。**
+   - 读取刚编译完的 Layer 2 文件
+   - 提取关键词（tags）和一句话核心结论（summary）
+   - 在 `WIKI_DIR/.index/` 下生成 `<原名>.summary.md`
+   - 格式遵循上方 Layer 3 文件格式规范
+5. **收尾 (更新账本)**：
    全部写入完成后，运行 `python3 <INSTALL_DIR>/wiki-compiler/scripts/sync_manifest.py --raw "$RAW_DIR" --wiki "$WIKI_DIR" --mark-done` 刷新 `ledger` 账本，确保这些文件已被彻底封存、未来不再重新编译。
 
 ### 工作流 B：沉思/做梦机制 (Trigger: `/wiki-dream`)
