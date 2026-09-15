@@ -1,7 +1,7 @@
 ---
 name: wiki-compiler
 description: 个人知识库全自动编译器 (三层卷积架构)。支持 /wiki-compiler (增量编译), /wiki-dream (沉思/做梦), /wiki-weaver (Map-Reduce 综述)。借鉴 CNN 卷积层思想：Raw → Refined → Summary，逐层压缩，按需下钻。
-version: 3.0.0
+version: 3.1.0
 emoji: 🧠
 os: [“macos”, “linux”, “windows”]
 author: zhangpelf
@@ -196,17 +196,15 @@ sources: [来源文件路径]     # 可选，追溯到 raw/ 中的原始文件
 
 ## 🗺️ 中长期路线图 (Future Work)
 
-以下功能尚未实现，记录于此供后续迭代参考：
+> V3.1 已落地：`scripts/build_graph.py`（图谱 JSON 持久化）+ `scripts/contradiction_detector.py`（矛盾 MVP 初筛）。以下为剩余演进：
 
-### 矛盾检测引擎 (Contradiction Detection)
-- 在 `/wiki-dream` 中增加高级模式：对同一主题下的多篇文章进行交叉事实比对
-- 当发现 "文章 A 说 X 导致 Y" 而 "文章 B 说 X 导致 Z" 时，自动标记并生成矛盾报告卡片
-- 技术路线：需要 LLM 对同主题文章做 pairwise 阅读 + 结构化 claim 提取
+### 矛盾检测引擎 (Contradiction Detection) — V3.1 MVP 已落地 ✅
+- 初筛：`python3 scripts/contradiction_detector.py --wiki "$WIKI_DIR" --top 20`，同标签分组 + 四信号打分，输出候选对 + LLM pairwise prompt
+- 进阶（待做）：对同一主题多篇文章做 LLM 结构化 claim 提取 + 自动生成矛盾报告卡片
 
-### 知识图谱持久化 (Persistent Knowledge Graph)
-- 维护 `WIKI_DIR/.meta/knowledge_graph.json`，记录所有实体和关系
-- 支持图查询：如"所有与 X 距离 ≤2 的概念"、"连接两个领域的桥接节点"
-- 可导出为 Neo4j / Cytoscape 格式用于高级可视化
+### 知识图谱持久化 (Persistent Knowledge Graph) — V3.1 JSON 版已落地 ✅
+- 已有：`python3 scripts/build_graph.py --wiki "$WIKI_DIR" --pretty` 落盘 `.index/knowledge_graph.json`（节点/边/孤儿/枢纽/幽灵）
+- 待做：图查询（"与 X 距离 ≤2 的概念"、"桥接节点"）、Neo4j / Cytoscape 导出
 
 ### 知识空白主动建议 (Gap Suggestion Engine)
 - 分析领域覆盖密度，识别只有粗浅概述的薄弱区域

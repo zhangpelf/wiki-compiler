@@ -1,5 +1,5 @@
 <div align="center">
-  <h1>🧠 Wiki Compiler V3: 三层卷积知识架构</h1>
+  <h1>🧠 Wiki Compiler V3.1: 三层卷积知识架构 + 图谱 & 矛盾引擎</h1>
   <p><strong>借鉴 CNN 卷积层思想：Raw → Refined → Summary，逐层压缩、按需下钻</strong></p>
   <p>复刻 Andrej Karpathy 的 LLM 知识库理念，终结“只记不读”的数字化囤积症</p>
 </div>
@@ -57,6 +57,20 @@ maturity: reviewed
 ### 5. VK Spec 1.0 协议
 - 目录标准化：强制 `raw/`, `wiki/{concepts,projects}`, `.index/`
 - 成熟度模型：`stub → draft → reviewed → authoritative`
+
+### 6. 🕸️ 知识图谱持久化（V3.1 NEW）
+`scripts/build_graph.py` 一键把双链落盘为 `.index/knowledge_graph.json`：
+```bash
+python3 scripts/build_graph.py --wiki /path/to/wiki --pretty
+```
+自动输出孤儿（零入链）、枢纽 Top5、幽灵引用（链到不存在）、stub 待补。图谱可被查询、可视化复用，是 V3.2 Neo4j 的前置。
+
+### 7. ⚔️ 矛盾检测引擎 MVP（V3.1 NEW）
+`scripts/contradiction_detector.py` 同标签分组 + 四信号打分（成熟度错配 / 否定词 / 数字分歧 / Jaccard），零 LLM 调用：
+```bash
+python3 scripts/contradiction_detector.py --wiki /path/to/wiki --top 20
+```
+每个候选对附可直接贴给 LLM 的 pairwise 判定 prompt，重型判定交给 LLM，脚本只负责找茬。
 
 ---
 
@@ -130,12 +144,12 @@ graph TD
 
 ## 🗺️ 未来路线图
 
-| 版本 | 目标 |
-|------|------|
-| **V3.1** | 矛盾检测引擎（自动识别文献间观点冲突） |
-| **V3.2** | 知识图谱持久化（Neo4j/Cytoscape 语义查询） |
-| **V3.3** | Layer 3 可视化 Dashboard（Dataview + 图谱） |
-| **V4.0** | 知识蒸馏（笔记库 → 本地模型微调数据集） |
+| 版本 | 目标 | 状态 |
+|------|------|------|
+| **V3.1** | 矛盾检测引擎 MVP + 知识图谱 JSON 持久化 | ✅ 已落地 |
+| **V3.2** | 图谱语义查询（Neo4j/Cytoscape 导出） | 🚧 下一站 |
+| **V3.3** | Layer 3 可视化 Dashboard（Dataview + 图谱） | 📋 排期中 |
+| **V4.0** | 知识蒸馏（笔记库 → 本地模型微调数据集） | 📋 排期中 |
 
 ---
 
@@ -143,7 +157,7 @@ graph TD
 
 > "I rarely touch the wiki directly. It's the domain of the LLM." — **Andrej Karpathy**
 
-Wiki Compiler V3 让这句话成为了现实：人只管扔素材，三层卷积架构自动完成从原始素材到可检索知识库的全流程编译。
+Wiki Compiler V3.1 让这句话成为了现实：人只管扔素材，三层卷积架构自动完成从原始素材到可检索知识库的全流程编译，图谱与矛盾引擎让知识自己长出来。
 
 ---
 

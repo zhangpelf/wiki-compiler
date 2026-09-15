@@ -4,6 +4,10 @@
 
 ## 📍 愿景：知识不应只是被“存放”，而应在深夜中“生长”。
 
+### ✅ V3.1: 矛盾检测 MVP + 图谱 JSON 持久化 (已落地)
+- `scripts/contradiction_detector.py`：同标签分组 + 成熟度错配/否定词/数字分歧/Jaccard 四信号打分，输出候选对 + LLM pairwise prompt（零 LLM 调用）
+- `scripts/build_graph.py`：双链 + frontmatter 落盘 `.index/knowledge_graph.json`，输出孤儿/枢纽/幽灵/stub 统计
+
 ### V3.1: 矛盾检测引擎 (Contradiction Engine)
 - **目标**：解决“同一概念，不同来源”之间的事实性冲突。
 - **功能**：利用 LLM 针对特定主题进行 pairwise 冲突比对，主动生成矛盾识别报告。
