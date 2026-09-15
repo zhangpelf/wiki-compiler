@@ -118,6 +118,40 @@ cp ~/Downloads/paper.pdf /path/to/raw/
 
 ---
 
+## 📊 效果实测（本地跑分，非示意）
+
+> 回应 issue：光讲架构不够直观，以下全是脚本真实输出（3 篇测试文档实测）。
+
+**增量编译防重** — `sync_manifest.py` 只列新增/修改，处理完 `--mark-done` 封存：
+```text
+======== 待编译的新资料 (Pending Queue) ========
+- /raw/new_paper.pdf
+✅ Layer 3 索引完整
+```
+
+**图谱持久化** — `build_graph.py --pretty`：
+```text
+节点: 3  边: 4
+🏝️ 孤儿 (零入链): 1  →  projects/notes
+👻 幽灵引用: 1      →  [[ghost_concept]]（被链但不存在，提示补卡）
+```
+
+**矛盾初筛** — `contradiction_detector.py --top 10`（两文同贴 `RAG` 标签但结论打架）：
+```text
+#1 score=7.0 [RAG]
+   A: concepts/rag.md (authoritative, 称准确率 40%)
+   B: concepts/prompt_engineering.md (draft, 称 RAG 无效、准确率 10%)
+   成熟度错配=True 数字分歧=True Jaccard=0.214
+```
+
+**健康检查** — `health_vis_engine.py`（5 篇文档库实测）：
+```text
+✅ 没有死链，所有双向链接指向均存在。
+🏝️ 发现 4 个孤立页面（无任何入链）
+```
+
+---
+
 ## 🗺️ 访问流程图
 
 ```mermaid

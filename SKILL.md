@@ -194,23 +194,5 @@ sources: [来源文件路径]     # 可选，追溯到 raw/ 中的原始文件
 
 ---
 
-## 🗺️ 中长期路线图 (Future Work)
-
-> V3.1 已落地：`scripts/build_graph.py`（图谱 JSON 持久化）+ `scripts/contradiction_detector.py`（矛盾 MVP 初筛）。以下为剩余演进：
-
-### 矛盾检测引擎 (Contradiction Detection) — V3.1 MVP 已落地 ✅
-- 初筛：`python3 scripts/contradiction_detector.py --wiki "$WIKI_DIR" --top 20`，同标签分组 + 四信号打分，输出候选对 + LLM pairwise prompt
-- 进阶（待做）：对同一主题多篇文章做 LLM 结构化 claim 提取 + 自动生成矛盾报告卡片
-
-### 知识图谱持久化 (Persistent Knowledge Graph) — V3.1 JSON 版已落地 ✅
-- 已有：`python3 scripts/build_graph.py --wiki "$WIKI_DIR" --pretty` 落盘 `.index/knowledge_graph.json`（节点/边/孤儿/枢纽/幽灵）
-- 待做：图查询（"与 X 距离 ≤2 的概念"、"桥接节点"）、Neo4j / Cytoscape 导出
-
-### 知识空白主动建议 (Gap Suggestion Engine)
-- 分析领域覆盖密度，识别只有粗浅概述的薄弱区域
-- 主动建议："你在 XX 领域只有 2 篇浅层文章，是否需要深入研究？"
-- 可结合 `/arxiv` 技能自动拉取相关论文补充
-
-### 合成数据与微调 (Synthetic Data + Fine-tuning)
-- 参考 Karpathy 原文的远期构想：当知识库足够大时，可考虑生成 QA pairs 做微调
-- 让模型把知识"内化"到权重中，而非仅依赖上下文窗口
+## 🗺️ 中长期路线图
+> 为省 token，此处不展开。中长期规划见 `ROADMAP.md`。

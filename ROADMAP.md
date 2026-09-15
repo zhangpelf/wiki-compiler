@@ -8,13 +8,12 @@
 - `scripts/contradiction_detector.py`：同标签分组 + 成熟度错配/否定词/数字分歧/Jaccard 四信号打分，输出候选对 + LLM pairwise prompt（零 LLM 调用）
 - `scripts/build_graph.py`：双链 + frontmatter 落盘 `.index/knowledge_graph.json`，输出孤儿/枢纽/幽灵/stub 统计
 
-### V3.1: 矛盾检测引擎 (Contradiction Engine)
-- **目标**：解决“同一概念，不同来源”之间的事实性冲突。
-- **功能**：利用 LLM 针对特定主题进行 pairwise 冲突比对，主动生成矛盾识别报告。
+### V3.2: 知识图谱查询 — 按需灵活调整 ❌ 不做重型版
+- ~~Neo4j / Cytoscape 持久化与语义查询~~：实测 `.index/knowledge_graph.json` 已够查询与可视化复用，重型图数据库投入产出比低，砍掉。
+- 实际应用中需要再按需加（导出脚本半天可写），不预支复杂度。
 
-### V3.2: 知识图谱持久化 (Graph Persistence)
-- **目标**：让 Obsidian 的链接不仅是美观的可视化，更是可查询的数据接口。
-- **功能**：维护全量 `knowledge_graph.json`，支持对“弱连接”和“跨界节点”进行图语义查询。
+### V3.3: Layer 3 可视化 Dashboard — 可选 📋
+- Dataview 聚合 + 图谱展示，需要时再做，不阻塞主流程。
 
 ### V3.5: 主动式研究助手 (Proactive Research Agent)
 - **目标**：自动补齐知识版图。
